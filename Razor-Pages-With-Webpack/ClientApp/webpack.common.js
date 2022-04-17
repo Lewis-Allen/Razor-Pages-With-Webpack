@@ -41,7 +41,7 @@ module.exports = {
         }),
         new CopyWebpackPlugin({
             patterns: [
-                { from: './favicon/' }
+                { from: './src/favicon/' }
             ]
         })
     ]
