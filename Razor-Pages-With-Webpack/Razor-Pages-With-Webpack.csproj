@@ -1,21 +1,52 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Razor_Pages_With_Webpack</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<RootNamespace>Razor_Pages_With_Webpack</RootNamespace>
 
-  <ItemGroup>
-    <Content Include="ClientApp\src\css\site.scss" />
-    <Content Include="ClientApp\src\js\site.ts" />
-  </ItemGroup>
+		<IsPackable>false</IsPackable>
+		<ClientApp>ClientApp\</ClientApp>
+		<wwwroot>wwwroot\</wwwroot>
+		<DefaultItemExcludes>$(DefaultItemExcludes);$(ClientApp)node_modules\**</DefaultItemExcludes>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="ClientApp\src\favicon\" />
-    <Folder Include="wwwroot\" />
-    <Folder Include="wwwroot\dist\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="ClientApp\src\css\site.scss" />
+		<Content Include="ClientApp\src\js\site.ts" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="ClientApp\src\favicon\" />
+		<Folder Include="wwwroot\" />
+		<Folder Include="wwwroot\dist\" />
+	</ItemGroup>
+
+	<!-- Check that npm is installed -->
+	<Target Name="NpmInstall" BeforeTargets="Build" Condition="'$(Configuration)' == 'Debug' And !Exists('$(ClientApp)node_modules') ">
+		<Exec Command="node --version" ContinueOnError="true">
+			<Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+		</Exec>
+		<Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. Please install Node.js from https://nodejs.org, and then restart your command prompt or IDE." />
+		<Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+		<Exec WorkingDirectory="$(ClientApp)" Command="npm install" />
+	</Target>
+	
+	<!-- Run npm build for dev -->
+	<Target Name="NpmRunBuild" BeforeTargets="Build" Condition="'$(Configuration)' == 'Debug'" DependsOnTargets="NpmInstall" >
+		<Exec WorkingDirectory="$(ClientApp)" Command="npm run build" />
+	</Target>
+
+	<!-- Run npm build-prod for publish -->
+	<Target Name="NpmRunBuildProd" BeforeTargets="Build" Condition="'$(Configuration)' == 'Release' And '$(DeployOnBuild)' == 'true'" DependsOnTargets="NpmInstall" >
+		<Exec WorkingDirectory="$(ClientApp)" Command="npm run build-prod" />
+	</Target>
+	
+	<!-- On clean -->
+	<Target Name="NpmClean" BeforeTargets="Clean">
+		<RemoveDir Directories="$(wwwroot)dist" />
+		<RemoveDir Directories="$(ClientApp)node_modules" />
+	</Target>
 
 </Project>
