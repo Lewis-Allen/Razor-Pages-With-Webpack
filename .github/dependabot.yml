@@ -8,8 +8,8 @@ updates:
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/Razor-Pages-With-Webpack/ClientApp/" # Location of package manifests
     schedule:
-      interval: "daily"
+      interval: "monthly"
   - package-ecosystem: "nuget"
     directory: "/Razor-Pages-With-Webpack/"
     schedule:
-      interval: "daily"
+      interval: "monthly"
