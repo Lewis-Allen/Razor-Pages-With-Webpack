@@ -3,7 +3,7 @@ Template repository for a .NET Razor Pages application with Webpack and Node.js.
 
 ## Features:
 Template features:
-* .NET 6
+* .NET 7
 * Webpack 5
 * SCSS & TypeScript Support
 
