@@ -6,7 +6,7 @@
 		"copy-webpack-plugin": "^11.0.0",
 		"css-loader": "^6.8.1",
 		"css-minimizer-webpack-plugin": "^4.0.0",
-		"mini-css-extract-plugin": "^2.6.1",
+		"mini-css-extract-plugin": "^2.7.6",
 		"sass": "^1.66.1",
 		"sass-loader": "^13.0.2",
 		"ts-loader": "^9.4.3",
